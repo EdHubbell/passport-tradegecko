@@ -1,7 +1,7 @@
 {
-  "name": "passport-github",
+  "name": "passport-tradegecko",
   "version": "0.1.7",
-  "description": "GitHub authentication strategy for Passport.",
+  "description": "TradeGecko authentication strategy for Passport.",
   "keywords": [
     "passport",
     "github",
@@ -11,16 +11,15 @@
     "identity"
   ],
   "author": {
-    "name": "Jared Hanson",
-    "email": "jaredhanson@gmail.com",
-    "url": "http://www.jaredhanson.net/"
+    "name": "Ed Hubbell",
+    "email": "edhubbell@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/jaredhanson/passport-github.git"
+    "url": "https://github.com/EdHubbell/passport-tradegecko"
   },
   "bugs": {
-    "url": "http://github.com/jaredhanson/passport-github/issues"
+    "url": "https://github.com/EdHubbell/passport-tradegecko/issues"
   },
   "licenses": [
     {

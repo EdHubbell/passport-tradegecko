@@ -1,13 +1,13 @@
 /* global describe, it, expect, before */
 /* jshint expr: true */
 
-var GitHubStrategy = require('../lib/strategy');
+var TradeGeckoStrategy = require('../lib/strategy');
 
 
 describe('Strategy#userProfile', function() {
     
   describe('loading profile using custom URL', function() {
-    var strategy =  new GitHubStrategy({
+    var strategy =  new TradeGeckoStrategy({
         clientID: 'ABC123',
         clientSecret: 'secret',
         userProfileURL: 'https://github.corpDomain/api/v3/user'

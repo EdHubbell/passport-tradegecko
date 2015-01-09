@@ -1,10 +1,17 @@
 var express = require('express')
   , passport = require('passport')
   , util = require('util')
-  , GitHubStrategy = require('passport-github').Strategy;
+  , TradeGeckoStrategy = require('../../lib/index.js').Strategy;
 
-var GITHUB_CLIENT_ID = "--insert-github-client-id-here--"
-var GITHUB_CLIENT_SECRET = "--insert-github-client-secret-here--";
+// Application ID from https://go.tradegecko.com/oauth/applications/????
+//var TRADEGECKO_CLIENT_ID = "--insert-tradegecko-client-id-here--"
+// Secret from https://go.tradegecko.com/oauth/applications/????
+//var TRADEGECKO_CLIENT_SECRET = "--insert-tradegecko-client-secret-here--";
+
+
+var TRADEGECKO_CLIENT_ID = "6393765383e8fc1a8b4e5ead100b4add51cdc791a3c17bc26f2ffdbc709710be"
+
+var TRADEGECKO_CLIENT_SECRET = "231e5e00f1be67500088dc92e77982f38a5e046fe0b93ae5d99909801dec958b";
 
 
 // Passport session setup.
@@ -12,7 +19,7 @@ var GITHUB_CLIENT_SECRET = "--insert-github-client-secret-here--";
 //   serialize users into and deserialize users out of the session.  Typically,
 //   this will be as simple as storing the user ID when serializing, and finding
 //   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete GitHub profile is serialized
+//   have a database of user records, the complete TradeGecko profile is serialized
 //   and deserialized.
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -23,22 +30,25 @@ passport.deserializeUser(function(obj, done) {
 });
 
 
-// Use the GitHubStrategy within Passport.
+// Use the TradeGeckoStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
-//   credentials (in this case, an accessToken, refreshToken, and GitHub
+//   credentials (in this case, an accessToken, refreshToken, and TradeGecko
 //   profile), and invoke a callback with a user object.
-passport.use(new GitHubStrategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+passport.use(new TradeGeckoStrategy({
+    clientID: TRADEGECKO_CLIENT_ID,
+    clientSecret: TRADEGECKO_CLIENT_SECRET,
+    callbackURL: "http://127.0.0.1:3000/auth/tradegecko/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
       
-      // To keep the example simple, the user's GitHub profile is returned to
+      console.log('Here is the access_token:');
+      console.log(accessToken);
+
+      // To keep the example simple, the user's TradeGecko profile is returned to
       // represent the logged-in user.  In a typical application, you would want
-      // to associate the GitHub account with a user record in your database,
+      // to associate the TradeGecko account with a user record in your database,
       // and return that user instead.
       return done(null, profile);
     });
@@ -73,6 +83,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
+//  console.log(req);
   res.render('account', { user: req.user });
 });
 
@@ -80,26 +91,28 @@ app.get('/login', function(req, res){
   res.render('login', { user: req.user });
 });
 
-// GET /auth/github
+// GET /auth/tradegecko
 //   Use passport.authenticate() as route middleware to authenticate the
-//   request.  The first step in GitHub authentication will involve redirecting
-//   the user to github.com.  After authorization, GitHubwill redirect the user
-//   back to this application at /auth/github/callback
-app.get('/auth/github',
-  passport.authenticate('github'),
+//   request.  The first step in TradeGecko authentication will involve redirecting
+//   the user to tradegecko.com.  After authorization, TradeGecko will redirect the user
+//   back to this application at /auth/tradegecko/callback
+app.get('/auth/tradegecko',
+  passport.authenticate('tradegecko'),
   function(req, res){
-    // The request will be redirected to GitHub for authentication, so this
+    // The request will be redirected to TradeGecko for authentication, so this
     // function will not be called.
   });
 
-// GET /auth/github/callback
+// GET /auth/tradegecko/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
+app.get('/auth/tradegecko/callback', 
+  passport.authenticate('tradegecko', { failureRedirect: '/login' }),
   function(req, res) {
+    console.log(req);
+
     res.redirect('/');
   });
 
